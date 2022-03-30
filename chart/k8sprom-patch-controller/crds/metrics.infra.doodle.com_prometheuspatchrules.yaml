@@ -46,15 +46,22 @@ spec:
             description: PrometheusPatchRuleSpec defines the desired state of PrometheusPatchRule
             properties:
               expr:
+                description: Expression is the prometheus .query
                 type: string
               for:
+                description: For is a durstion for how long the rule should be in
+                  pending before apply patches.
                 type: string
               interval:
+                description: Interval is the duration in which the expression gets
+                  evaluated
                 type: string
               json6902Patches:
+                description: .JSON6902Patches define to what target are applied what
+                  patches
                 items:
-                  description: Patch contains JSON6902 patches, and the target the
-                    patch should be applied to.
+                  description: JSON6902Patch is a target selector and a list of JSON6902
+                    patches
                   properties:
                     patch:
                       description: Patch contains JSON6902 patches with an array of
@@ -109,7 +116,7 @@ spec:
                   type: object
                 type: array
               prometheus:
-                description: PrometheusSpec contains specs for accessing prometheus
+                description: Prometheus holds information about where to find prometheus
                 properties:
                   address:
                     type: string
@@ -117,6 +124,7 @@ spec:
                 - address
                 type: object
               suspend:
+                description: Suspend may suspend reconciliation of the resource.
                 type: boolean
             required:
             - prometheus

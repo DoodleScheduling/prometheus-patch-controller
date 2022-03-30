@@ -1,12 +1,12 @@
 # k8sprom-patch-controller
 
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/5713/badge)](https://bestpractices.coreinfrastructure.org/projects/5713)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/5862/badge)](https://bestpractices.coreinfrastructure.org/projects/5862)
 [![e2e](https://github.com/DoodleScheduling/k8sprom-patch-controller/workflows/e2e/badge.svg)](https://github.com/DoodleScheduling/k8sprom-patch-controller/actions)
 [![report](https://goreportcard.com/badge/github.com/DoodleScheduling/k8sprom-patch-controller)](https://goreportcard.com/report/github.com/DoodleScheduling/k8sprom-patch-controller)
 [![license](https://img.shields.io/github/license/DoodleScheduling/k8sprom-patch-controller.svg)](https://github.com/DoodleScheduling/k8sprom-patch-controller/blob/master/LICENSE)
 [![release](https://img.shields.io/github/release/DoodleScheduling/k8sprom-patch-controller/all.svg)](https://github.com/DoodleScheduling/k8sprom-patch-controller/releases)
 
-Apply patches to selected kubernetes resources based on prometheus queries and schedule times.
+Apply patches to selected kubernetes resources based on prometheus queries.
 
 ## Example
 
@@ -37,7 +37,7 @@ spec:
 ## Details
 
 ### Prometheus expression
-As soon as the given rule spec.expr evaluates to `true` the patches spec.patches get applied to the defined target spec.patches[].target.
+As soon as the given rule spec.expr evaluates to `true` the patches spec.patches get applied to the defined target `spec.patches[].target`.
 
 ### Pending state
 You may define a window spec.for for which the rule will be in a pending condition similar to prometheus alerting rules.
@@ -62,7 +62,7 @@ Instead selecting a single resource you may also select multiple ones by left ou
 You can filter multiple onse by specifying a comma separated label select: `labelSelector: label=value,label2=value`.
 
 ### Interval
-Defines in what interval the rule is evaluated. This is required.
+Defines in what interval the rule is evaluated.
 
 ### Suspend
 The PrometheusPatchRule may be suspended setting spec.suspend to `true`. A suspended rule does not get reconciled, meaning no patches will be applied as long as the rule is suspended.
