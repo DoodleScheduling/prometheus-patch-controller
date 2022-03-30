@@ -70,7 +70,7 @@ jobs:
       - name: Deploy controller
         run: make deploy IMG=test/k8sprom-patch-controller:latest
       - name: Setup prometheus
-        run: bash -e ./scripts/e2/setup-prometheus.sh
+        run: bash -e ./scripts/e2e/setup-prometheus.sh
       - name: Run k8sprom-patch-controller tests
         run: bash -e ./scripts/e2e/test.sh
       - name: Logs
@@ -80,7 +80,7 @@ jobs:
         if: failure()
         run: |
           kubectl -n kube-system describe pods
-          kubectl -n podinfo get pods
+          kubectl -n prometheus get pods
           kubectl -n k8sprom-patch-controller-system describe pods
           kubectl -n k8sprom-patch-controller-system get all
           kubectl -n k8sprom-patch-controller-system logs deploy/k8sprom-patch-controller-controller-manager manager
