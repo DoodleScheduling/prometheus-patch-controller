@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
-- bases/metrics.infra.doodle.com_patchrules.yaml
+- bases/metrics.infra.doodle.com_prometheuspatchrules.yaml
 #+kubebuilder:scaffold:crdkustomizeresource
 
 configurations:

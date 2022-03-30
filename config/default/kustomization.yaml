@@ -3,6 +3,7 @@ namespace: k8sprom-patch-controller-system
 bases:
 - ../rbac
 - ../manager
+- ../crd
 
 patchesStrategicMerge:
 # Protect the /metrics endpoint by putting it behind auth.
