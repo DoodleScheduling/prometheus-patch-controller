@@ -1,0 +1,52 @@
+{{- if .Values.clusterRBAC.enabled -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ template "k8sprom-patch-controller.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "k8sprom-patch-controller.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "k8sprom-patch-controller.chart" . }}
+  annotations:
+    {{- toYaml .Values.annotations | nindent 4 }}
+rules:
+- apiGroups:
+  - metrics.infra.doodle.com
+  resources:
+  - patchrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - metrics.infra.doodle.com
+  resources:
+  - patchrules/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - metrics.infra.doodle.com
+  resources:
+  - patchrules/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+{{- end }}

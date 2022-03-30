@@ -1,0 +1,21 @@
+apiVersion: metrics.infra.doodle.com/v1beta1
+kind: PrometheusPatchRule
+metadata:
+  name: pause-namespace
+spec:
+  prometheus:
+    address: http://prometheus-server.prometheus
+  expr: |
+    rate(nginx_ingress_controller_requests{exported_namespace="default"}[5m]) == 0 and ON() (vector((time() % 86400) / 3600) > 18 or vector((time() % 86400) / 3600) < 7)
+  for: 5m
+  interval: 2m
+  suspend: false
+  json6902Patches:
+  - target:
+      version: v1
+      resource: namespaces
+      name: default
+    patch:
+    - op: add
+      path: /metadata/annotations/k8s-pause~suspend"
+      value: "true"

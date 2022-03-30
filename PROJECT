@@ -1,0 +1,16 @@
+domain: doodle.com
+layout:
+- go.kubebuilder.io/v3
+projectName: k8sprom-patch-controller
+repo: github.com/doodlescheduling/k8sprom-patch-controller
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: doodle.com
+  group: metrics.infra.doodle.com
+  kind: PrometheusPatchRule
+  path: github.com/doodlescheduling/k8sprom-patch-controller/api/v1beta1
+  version: v1beta1
+version: "3"

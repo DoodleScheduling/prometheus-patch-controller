@@ -1,0 +1,21 @@
+apiVersion: metrics.infra.doodle.com/v1beta1
+kind: PrometheusPatchRule
+metadata:
+  name: annotate-namespace
+spec:
+  prometheus:
+    address: http://prometheus-server.prometheus:9090
+  expr: |
+    up == 1
+  interval: 1m
+  suspend: false
+  json6902Patches:
+  - target:
+      version: v1
+      name: default
+      resource: namespaces
+    patch:
+    - op: add
+      path: /metadata/annotations
+      value:
+        foo: bar
