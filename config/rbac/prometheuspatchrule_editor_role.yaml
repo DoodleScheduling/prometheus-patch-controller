@@ -1,20 +1,24 @@
-# permissions for end users to view patchrules.
+# permissions for end users to edit patchrules.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: patchrule-viewer-role
+  name: prometheuspatchrules-editor-role
 rules:
 - apiGroups:
   - metrics.infra.doodle.com
   resources:
-  - patchrules
+  - prometheuspatchrules
   verbs:
+  - create
+  - delete
   - get
   - list
+  - patch
+  - update
   - watch
 - apiGroups:
   - metrics.infra.doodle.com
   resources:
-  - patchrules/status
+  - prometheuspatchrules/status
   verbs:
   - get

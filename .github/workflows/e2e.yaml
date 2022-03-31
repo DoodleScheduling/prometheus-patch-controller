@@ -75,12 +75,12 @@ jobs:
         run: bash -e ./scripts/e2e/test.sh
       - name: Logs
         run: |
-          kubectl -n k8sprom-patch-controller-system logs deploy/k8sprom-patch-controller-controller-manager manager
+          kubectl -n k8sprom-patch-system logs deploy/k8sprom-patch-controller-controller-manager manager
       - name: Debug failure
         if: failure()
         run: |
           kubectl -n kube-system describe pods
           kubectl -n prometheus get pods
-          kubectl -n k8sprom-patch-controller-system describe pods
-          kubectl -n k8sprom-patch-controller-system get all
-          kubectl -n k8sprom-patch-controller-system logs deploy/k8sprom-patch-controller-controller-manager manager
+          kubectl -n k8sprom-patch-system describe pods
+          kubectl -n k8sprom-patch-system get all
+          kubectl -n k8sprom-patch-system logs deploy/k8sprom-patch-controller-controller-manager manager

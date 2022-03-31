@@ -43,9 +43,9 @@ import (
 	"github.com/doodlescheduling/k8sprom-patch-controller/api/v1beta1"
 )
 
-//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=patchrules,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=patchrules/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=patchrules/finalizers,verbs=update
+//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheuspatchrules,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheuspatchrules/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheuspatchrules/finalizers,verbs=update
 //+kubebuilder:rbac:groups="",resources=events,verbs=create;patch
 
 // PatchPrometheusPatchRuleReconciler reconciles a PrometheusPatchRule object

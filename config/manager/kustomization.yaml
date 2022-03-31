@@ -1,13 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namePrefix: k8sprom-patch-
 resources:
-- manager.yaml
+- deployment.yaml
 generatorOptions:
   disableNameSuffixHash: true
 configMapGenerator:
 - files:
   - controller_manager_config.yaml
-  name: manager-config
+  name: controller-config
 images:
 - name: ghcr.io/doodlescheduling/k8sprom-patch-controller
   newTag: v0.1.0
