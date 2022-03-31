@@ -84,4 +84,4 @@ jobs:
           kubectl -n k8sprom-patch-system describe pods
           kubectl -n k8sprom-patch-system get all
           kubectl -n k8sprom-patch-system logs deploy/k8sprom-patch-controller manager
-          kubectl -n default get prometheuspatchrules
+          kubectl -n default get prometheuspatchrules -o yaml
