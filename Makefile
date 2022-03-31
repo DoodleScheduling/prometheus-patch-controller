@@ -66,11 +66,11 @@ test: manifests generate fmt vet tidy envtest ## Run tests.
 ##@ Build
 
 .PHONY: build
-build: generate fmt vet ## Build manager binary.
+build: generate fmt vet tidy ## Build manager binary.
 	go build -o bin/manager main.go
 
 .PHONY: run
-run: manifests generate fmt vet ## Run a controller from your host.
+run: manifests generate fmt vet tidy ## Run a controller from your host.
 	go run ./main.go
 
 # Find or download gen-crd-api-reference-docs
