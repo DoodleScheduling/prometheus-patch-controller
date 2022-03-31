@@ -23,7 +23,7 @@ subjects:
   {{- end }}
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.clusterRBAC.fullAdmin -}}
+{{- if .Values.clusterRBAC.fullAdmin }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
