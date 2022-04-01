@@ -376,6 +376,23 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 				return false
 			}, timeout, interval).Should(BeTrue())
 		})
+
+		It("has as correct field manager set", func() {
+			got := &corev1.Namespace{}
+			Eventually(func() bool {
+				_ = k8sClient.Get(context.Background(), types.NamespacedName{
+					Name: "default",
+				}, got)
+
+				for _, v := range got.ManagedFields {
+					if v.Manager == "test-suite" {
+						return true
+					}
+				}
+
+				return false
+			}, timeout, interval).Should(BeTrue())
+		})
 	})
 
 	Describe("multiple patches are applied to multiple resource selector", func() {
@@ -396,6 +413,9 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      keyRule.Name,
 					Namespace: keyRule.Namespace,
+					Labels: map[string]string{
+						"selector": "foo",
+					},
 				},
 				Spec: v1beta1.PrometheusPatchRuleSpec{
 					Expr: "prometheus_build_info > 0",
@@ -421,11 +441,10 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 						},
 						v1beta1.JSON6902Patch{
 							Target: v1beta1.Selector{
-								Group:     "metrics.infra.doodle.com",
-								Version:   "v1beta1",
-								Resource:  "prometheuspatchrules",
-								Name:      keyRule.Name,
-								Namespace: keyRule.Namespace,
+								Group:         "metrics.infra.doodle.com",
+								Version:       "v1beta1",
+								Resource:      "prometheuspatchrules",
+								LabelSelector: "selector=foo",
 							},
 							Patch: []v1beta1.JSONPatch{
 								v1beta1.JSONPatch{
@@ -474,7 +493,7 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 			}, timeout, interval).Should(BeTrue())
 		})
 
-		It("actually has prometheuspatchrule resource patched", func() {
+		It("actually has prometheuspatchrules patched", func() {
 			got := &v1beta1.PrometheusPatchRule{}
 			Eventually(func() bool {
 				_ = k8sClient.Get(context.Background(), keyRule, got)
@@ -560,7 +579,7 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 			keyRule     types.NamespacedName
 		)
 
-		duration, err := time.ParseDuration("5s")
+		duration, err := time.ParseDuration("8s")
 		Expect(err).NotTo(HaveOccurred(), "failed to parse interval duration")
 
 		It("creates PrometheusPatchRule successfully", func() {
@@ -613,7 +632,7 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 			Eventually(func() bool {
 				_ = k8sClient.Get(context.Background(), keyRule, got)
 
-				return len(got.Status.Conditions) == 2 &&
+				return len(got.Status.Conditions) == 1 &&
 					got.Status.Conditions[0].Reason == v1beta1.PendingReason &&
 					got.Status.Conditions[0].Status == "True" &&
 					got.Status.Conditions[0].Type == v1beta1.ActiveCondition

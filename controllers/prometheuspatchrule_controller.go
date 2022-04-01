@@ -95,7 +95,7 @@ func (r *PrometheusPatchRuleReconciler) Reconcile(ctx context.Context, req ctrl.
 		return ctrl.Result{}, nil
 	}
 
-	rule, res, reconcileErr := r.reconcile(ctx, rule, logger)
+	rule, res, err := r.reconcile(ctx, rule, logger)
 	if err != nil {
 		r.Recorder.Event(&rule, "Normal", "error", err.Error())
 	}
@@ -106,7 +106,7 @@ func (r *PrometheusPatchRuleReconciler) Reconcile(ctx context.Context, req ctrl.
 		return ctrl.Result{Requeue: true}, err
 	}
 
-	return res, reconcileErr
+	return res, err
 }
 
 func (r *PrometheusPatchRuleReconciler) reconcile(ctx context.Context, rule v1beta1.PrometheusPatchRule, logger logr.Logger) (v1beta1.PrometheusPatchRule, ctrl.Result, error) {
@@ -115,7 +115,7 @@ func (r *PrometheusPatchRuleReconciler) reconcile(ctx context.Context, rule v1be
 	})
 
 	if err != nil {
-		err = fmt.Errorf("Failed parse prometheus address: %w", err)
+		err = fmt.Errorf("failed parse prometheus address: %w", err)
 		rule = v1beta1.PrometheusPatchRuleNotActive(rule, v1beta1.InvalidPrometheusURLReason, err.Error())
 		return rule, ctrl.Result{}, err
 	}
@@ -123,7 +123,7 @@ func (r *PrometheusPatchRuleReconciler) reconcile(ctx context.Context, rule v1be
 	v1api := v1.NewAPI(client)
 	result, warnings, err := v1api.Query(ctx, rule.Spec.Expr, time.Now())
 	if err != nil {
-		err = fmt.Errorf("Failed executing prometheus query: %w", err)
+		err = fmt.Errorf("failed executing prometheus query: %w", err)
 		rule = v1beta1.PrometheusPatchRuleNotActive(rule, v1beta1.PrometheusQueryFailedReason, err.Error())
 		return rule, ctrl.Result{}, err
 	}
@@ -134,20 +134,20 @@ func (r *PrometheusPatchRuleReconciler) reconcile(ctx context.Context, rule v1be
 
 	value, err := r.parseValue(result)
 	if err != nil {
-		err = fmt.Errorf("Failed parsing metric value: %w", err)
+		err = fmt.Errorf("failed parsing metric value: %w", err)
 		rule = v1beta1.PrometheusPatchRuleNotActive(rule, v1beta1.FailedReason, err.Error())
 		return rule, ctrl.Result{}, err
 	}
 
 	if len(value) > 0 {
-		msg := "Found query samples"
+		msg := "found query samples"
 		activeCondition := meta.FindStatusCondition(rule.Status.Conditions, v1beta1.ActiveCondition)
 		if activeCondition == nil {
 			activeCondition = &metav1.Condition{}
 		}
 
 		// If we have waiting window (spec.for) add pending condition reason
-		if activeCondition.Reason != v1beta1.PendingReason && rule.Spec.For.Duration != 0 {
+		if activeCondition.Reason != v1beta1.PendingReason && activeCondition.Reason != v1beta1.ActiveReason && rule.Spec.For.Duration != 0 {
 			rule = v1beta1.PrometheusPatchRuleActive(rule, v1beta1.PendingReason, msg)
 			// Await wait time and apply patch or if there is no wait time apply patch right away
 		} else if activeCondition.LastTransitionTime.Time.Add(rule.Spec.For.Duration).Before(time.Now()) || rule.Spec.For.Duration == 0 {
@@ -155,7 +155,7 @@ func (r *PrometheusPatchRuleReconciler) reconcile(ctx context.Context, rule v1be
 			rule, err = r.applyPatches(ctx, rule)
 		}
 	} else {
-		msg := "Query did not return samples"
+		msg := "query did not return samples"
 		rule = v1beta1.PrometheusPatchRuleNotActive(rule, v1beta1.InactiveReason, msg)
 	}
 
@@ -168,7 +168,7 @@ func (r *PrometheusPatchRuleReconciler) reconcile(ctx context.Context, rule v1be
 
 func (r *PrometheusPatchRuleReconciler) applyPatches(ctx context.Context, rule v1beta1.PrometheusPatchRule) (v1beta1.PrometheusPatchRule, error) {
 	if len(rule.Spec.JSON6902Patches) == 0 {
-		msg := "No patches have been defined"
+		msg := "no patches have been defined"
 		rule = v1beta1.PrometheusPatchRuleNoPatchApplied(rule, v1beta1.NoPatchFoundReason, msg)
 		return rule, nil
 	}
@@ -189,21 +189,20 @@ func (r *PrometheusPatchRuleReconciler) applyPatches(ctx context.Context, rule v
 			return rule, err
 		}
 
-		if v.Target.Name != "" {
-			_, err = res.Patch(ctx, v.Target.Name, types.JSONPatchType, b, metav1.PatchOptions{
-				FieldManager: r.FieldManager,
-			})
-		} else {
+		if v.Target.Name == "" {
 			list, err := res.List(ctx, metav1.ListOptions{
 				LabelSelector: v.Target.LabelSelector,
 			})
 
 			if err != nil {
+				err = fmt.Errorf("failed to find target resources: %w", err)
+				rule = v1beta1.PrometheusPatchRuleNoPatchApplied(rule, v1beta1.PatchApplyFailedReason, err.Error())
 				return rule, err
 			}
 
 			for _, item := range list.Items {
-				_, err = res.Patch(ctx, item.GetName(), types.JSONPatchType, b, metav1.PatchOptions{
+				res := r.DynClient.Resource(gvr).Namespace(item.GetNamespace())
+				_, err := res.Patch(ctx, item.GetName(), types.JSONPatchType, b, metav1.PatchOptions{
 					FieldManager: r.FieldManager,
 				})
 
@@ -211,10 +210,14 @@ func (r *PrometheusPatchRuleReconciler) applyPatches(ctx context.Context, rule v
 					break
 				}
 			}
+		} else {
+			_, err = res.Patch(ctx, v.Target.Name, types.JSONPatchType, b, metav1.PatchOptions{
+				FieldManager: r.FieldManager,
+			})
 		}
 
 		if err != nil {
-			err = fmt.Errorf("Failed to apply patch: %w", err)
+			err = fmt.Errorf("failed to apply patch: %w", err)
 			rule = v1beta1.PrometheusPatchRuleNoPatchApplied(rule, v1beta1.PatchApplyFailedReason, err.Error())
 			return rule, err
 		}
