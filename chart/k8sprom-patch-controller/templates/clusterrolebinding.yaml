@@ -28,7 +28,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ template "k8sprom-patch-controller.fullname" . }}
+  name: {{ template "k8sprom-patch-controller.fullname" . }}-cluster-admin
   labels:
     app.kubernetes.io/name: {{ include "k8sprom-patch-controller.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
