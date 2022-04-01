@@ -8,6 +8,9 @@
 * Fix env binding FIELD_MANAGER to cmd arg --field-manager
 
 
+### Changes
+* Change leader election id to k8sprom-patch-controller
+
 ## 0.1.1
 
 **Release date:** 2022-03-31
