@@ -2,6 +2,25 @@ apiVersion: v1
 entries:
   k8sprom-patch-controller:
   - apiVersion: v2
+    appVersion: v0.1.1
+    created: "2022-04-01T11:11:46.167926161Z"
+    description: Patch kubernetes resources using prometheus queries
+    digest: 647ed99e5c86b926f052bfaa9144f06d3258c7efab4a84b1ffdeb2c89a013282
+    home: https://github.com/DoodleScheduling/k8sprom-patch-controller
+    keywords:
+    - kubernetes-controller
+    - prometheus
+    - kubernetes-patch
+    maintainers:
+    - email: devops@doodle.com
+      name: devops
+    name: k8sprom-patch-controller
+    sources:
+    - https://github.com/DoodleScheduling/k8sprom-patch-controller
+    urls:
+    - https://github.com/DoodleScheduling/k8sprom-patch-controller/releases/download/k8sprom-patch-controller-0.1.3/k8sprom-patch-controller-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
     appVersion: v0.1.0
     created: "2022-04-01T09:53:21.028321966Z"
     description: Patch kubernetes resources using prometheus queries
@@ -58,4 +77,4 @@ entries:
     urls:
     - https://github.com/DoodleScheduling/k8sprom-patch-controller/releases/download/k8sprom-patch-controller-0.1.0/k8sprom-patch-controller-0.1.0.tgz
     version: 0.1.0
-generated: "2022-04-01T09:53:21.028333066Z"
+generated: "2022-04-01T11:11:46.167950862Z"
