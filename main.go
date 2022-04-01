@@ -56,7 +56,6 @@ func init() {
 var (
 	metricsAddr             = ":9556"
 	probesAddr              = ":9557"
-	webhookPort             = 9443
 	enableLeaderElection    = false
 	leaderElectionNamespace string
 	namespaces              = ""
@@ -97,11 +96,10 @@ func main() {
 	opts := ctrl.Options{
 		Scheme:                  scheme,
 		MetricsBindAddress:      viper.GetString("metrics-addr"),
-		Port:                    viper.GetInt("webhoook-port"),
 		HealthProbeBindAddress:  viper.GetString("probe-addr"),
 		LeaderElection:          viper.GetBool("enable-leader-election"),
 		LeaderElectionNamespace: viper.GetString("leader-election-namespace"),
-		LeaderElectionID:        "k8sprom-patch-controller.infra.doodle.com",
+		LeaderElectionID:        "k8sprom-patch-controller",
 	}
 
 	ns := strings.Split(viper.GetString("namespaces"), ",")
@@ -127,7 +125,7 @@ func main() {
 	if err = (&controllers.PrometheusPatchRuleReconciler{
 		Client:       mgr.GetClient(),
 		DynClient:    dynClient,
-		FieldManager: fieldManager,
+		FieldManager: viper.GetString("field-manager"),
 		Log:          ctrl.Log.WithName("controllers").WithName("PrometheusPatchRule"),
 		Scheme:       mgr.GetScheme(),
 		Recorder:     mgr.GetEventRecorderFor("PrometheusPatchRule"),
