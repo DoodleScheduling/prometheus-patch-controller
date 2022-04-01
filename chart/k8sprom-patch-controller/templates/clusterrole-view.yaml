@@ -15,7 +15,7 @@ rules:
 - apiGroups:
   - metrics.infra.doodle.com
   resources:
-  - patchrules
+  - prometheuspatchrules
   verbs:
   - get
   - list
@@ -23,7 +23,7 @@ rules:
 - apiGroups:
   - metrics.infra.doodle.com
   resources:
-  - patchrules/status
+  - prometheuspatchrules/status
   verbs:
   - get
 {{- end }}
