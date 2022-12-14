@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 // Package v1beta1 contains API Schema definitions for the metrics.infra.doodle.com v1beta1 API group
-//+kubebuilder:object:generate=true
-//+groupName=metrics.infra.doodle.com
+// +kubebuilder:object:generate=true
+// +groupName=metrics.infra.doodle.com
 package v1beta1
 
 import (

@@ -1,10 +1,10 @@
-# k8sprom-patch-controller
+# Kubernetes resource patch controller using PromQL
 
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/5862/badge)](https://bestpractices.coreinfrastructure.org/projects/5862)
-[![e2e](https://github.com/DoodleScheduling/k8sprom-patch-controller/workflows/e2e/badge.svg)](https://github.com/DoodleScheduling/k8sprom-patch-controller/actions)
-[![report](https://goreportcard.com/badge/github.com/DoodleScheduling/k8sprom-patch-controller)](https://goreportcard.com/report/github.com/DoodleScheduling/k8sprom-patch-controller)
-[![license](https://img.shields.io/github/license/DoodleScheduling/k8sprom-patch-controller.svg)](https://github.com/DoodleScheduling/k8sprom-patch-controller/blob/master/LICENSE)
 [![release](https://img.shields.io/github/release/DoodleScheduling/k8sprom-patch-controller/all.svg)](https://github.com/DoodleScheduling/k8sprom-patch-controller/releases)
+[![release](https://github.com/doodlescheduling/k8sprom-patch-controller/actions/workflows/release.yaml/badge.svg)](https://github.com/doodlescheduling/k8sprom-patch-controller/actions/workflows/release.yaml)
+[![report](https://goreportcard.com/badge/github.com/DoodleScheduling/k8sprom-patch-controller)](https://goreportcard.com/report/github.com/DoodleScheduling/k8sprom-patch-controller)
+[![Coverage Status](https://coveralls.io/repos/github/doodlescheduling/k8sprom-patch-controller/badge.svg?branch=main)](https://coveralls.io/github/doodlescheduling/k8sprom-patch-controller?branch=master)
+[![license](https://img.shields.io/github/license/DoodleScheduling/k8sprom-patch-controller.svg)](https://github.com/DoodleScheduling/k8sprom-patch-controller/blob/master/LICENSE)
 
 Apply patches to selected kubernetes resources based on prometheus queries.
 
