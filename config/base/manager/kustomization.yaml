@@ -6,4 +6,5 @@ resources:
 - sa.yaml
 images:
 - name: ghcr.io/doodlescheduling/k8sprom-patch-controller
-  newTag: v0.1.2
+  newName: controller
+  newTag: latest
