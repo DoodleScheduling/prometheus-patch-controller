@@ -13,3 +13,4 @@ name: k8sprom-patch-controller
 sources:
 - https://github.com/DoodleScheduling/k8sprom-patch-controller
 version: 0.3.0
+
