@@ -7,8 +7,7 @@ Installs the [k8sprom-patch-controller](https://github.com/DoodleScheduling/k8sp
 To install the chart with the release name `k8sprom-patch-controller`:
 
 ```console
-helm repo add k8sprom-patch-controller https://doodlescheduling.github.io/k8sprom-patch-controller/
-helm upgrade --install k8sprom-patch-controller k8sprom-patch-controller/k8sprom-patch-controller
+helm upgrade --install k8sprom-patch-controller oci://ghcr.io/doodlescheduling/charts/k8sprom-patch-controller
 ```
 
 This command deploys k8sprom-patch-controller with the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -31,5 +30,5 @@ podAnnotations:
 See Customizing the Chart Before Installing. To see all configurable options with detailed comments, visit the chart's values.yaml, or run the configuration command:
 
 ```sh
-$ helm show values k8sprom-patch-controller/k8sprom-patch-controller
+$ helm show values oci://ghcr.io/doodlescheduling/charts/k8sprom-patch-controller
 ```
