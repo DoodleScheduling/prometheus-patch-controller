@@ -6,7 +6,7 @@ on:
 jobs:
   size-label:
     runs-on: ubuntu-latest
-    if: ${{ !github.event.pull_request.head.repo.fork }}
+    if: ${{ !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' }}
     steps:
       - name: size-label
         uses: "pascalgn/size-label-action@1619680c5ac1ef360b944bb56a57587ba4aa2af8"
