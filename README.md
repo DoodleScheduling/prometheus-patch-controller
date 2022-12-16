@@ -3,7 +3,7 @@
 [![release](https://img.shields.io/github/release/DoodleScheduling/k8sprom-patch-controller/all.svg)](https://github.com/DoodleScheduling/k8sprom-patch-controller/releases)
 [![release](https://github.com/doodlescheduling/k8sprom-patch-controller/actions/workflows/release.yaml/badge.svg)](https://github.com/doodlescheduling/k8sprom-patch-controller/actions/workflows/release.yaml)
 [![report](https://goreportcard.com/badge/github.com/DoodleScheduling/k8sprom-patch-controller)](https://goreportcard.com/report/github.com/DoodleScheduling/k8sprom-patch-controller)
-[![Coverage Status](https://coveralls.io/repos/github/doodlescheduling/k8sprom-patch-controller/badge.svg?branch=main)](https://coveralls.io/github/doodlescheduling/k8sprom-patch-controller?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/DoodleScheduling/k8sprom-patch-controller/badge.svg?branch=master)](https://coveralls.io/github/DoodleScheduling/k8sprom-patch-controller?branch=master)
 [![license](https://img.shields.io/github/license/DoodleScheduling/k8sprom-patch-controller.svg)](https://github.com/DoodleScheduling/k8sprom-patch-controller/blob/master/LICENSE)
 
 Apply patches to kubernetes resources based on prometheus queries.
