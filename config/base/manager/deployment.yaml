@@ -23,8 +23,7 @@ spec:
         - --enable-leader-election
         image: ghcr.io/doodlescheduling/k8sprom-patch-controller:latest
         name: k8sprom-patch-controller
-        #imagePullPolicy: Never
-        imagePullPolicy: Always
+        imagePullPolicy: Never
         ports:
         - name: metrics
           containerPort: 9556
