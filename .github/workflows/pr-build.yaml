@@ -63,9 +63,6 @@ jobs:
         run: bash -e ./scripts/e2e/setup-prometheus.sh
       - name: Run k8sprom-patch-controller tests
         run: bash -e ./scripts/e2e/test.sh
-      - name: Logs
-        run: |
-          kubectl -n k8sprom-patch-system logs deploy/k8sprom-patch-controller manager
       - name: Debug failure
         if: failure()
         run: |
@@ -73,5 +70,5 @@ jobs:
           kubectl -n prometheus get pods
           kubectl -n k8sprom-patch-system describe pods
           kubectl -n k8sprom-patch-system get all
-          kubectl -n k8sprom-patch-system logs deploy/k8sprom-patch-controller manager
+          kubectl -n k8sprom-patch-system logs deploy/k8sprom-patch-controller
           kubectl -n default get prometheuspatchrules -o yaml
