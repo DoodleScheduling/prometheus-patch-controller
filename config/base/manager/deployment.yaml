@@ -16,28 +16,39 @@ spec:
       labels:
         control-plane: controller-manager
     spec:
-      securityContext:
-        runAsNonRoot: true
       containers:
       - command:
         - /manager
         args:
         - --enable-leader-election
         image: ghcr.io/doodlescheduling/k8sprom-patch-controller:latest
-        name: manager
+        name: k8sprom-patch-controller
         imagePullPolicy: Never
+        ports:
+        - name: metrics
+          containerPort: 9556
+          protocol: TCP
+        - name: probes
+          containerPort: 9557
+          protocol: TCP
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 9557
-          initialDelaySeconds: 15
-          periodSeconds: 20
+            port: probes
+          initialDelaySeconds: 5
+          periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /readyz
-            port: 9557
+            port: probes
           initialDelaySeconds: 5
           periodSeconds: 10
         resources:

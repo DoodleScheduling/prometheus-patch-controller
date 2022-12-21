@@ -3,8 +3,10 @@ kind: Kustomization
 namespace: k8sprom-patch-system
 bases:
 - namespace.yaml
-- ../rbac
-- ../manager
-- ../crd
-patchesStrategicMerge:
-- manager_auth_proxy_patch.yaml
+- ../base/rbac
+- ../base/manager
+- ../base/crd
+
+# Uncomment for prometheus support
+# components:
+#- ../base/components/prometheus

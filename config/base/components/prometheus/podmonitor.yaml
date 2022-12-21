@@ -1,13 +1,9 @@
-# Prometheus Monitor Service (Metrics)
 apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+kind: PodMonitor
 metadata:
-  labels:
-    control-plane: controller-manager
-  name: controller-manager-metrics-monitor
-  namespace: system
+  name: controller
 spec:
-  endpoints:
+  podMetricsEndpoints:
     - path: /metrics
       port: https
       scheme: https
