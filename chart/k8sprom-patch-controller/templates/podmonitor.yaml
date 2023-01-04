@@ -22,6 +22,9 @@ spec:
     {{- if .Values.kubeRBACProxy.enabled }}  
     port: https
     scheme: https
+    bearerTokenSecret: 
+      key: token
+      name: {{ template "k8sprom-patch-controller.serviceAccountName" . }}
     tlsConfig:
       insecureSkipVerify: true
     {{- else }}

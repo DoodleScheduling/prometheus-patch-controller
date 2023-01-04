@@ -125,6 +125,6 @@ prometheusRule:
   rules: []
 
 kubeRBACProxy:
-  enabled: false
+  enabled: true
 
 tolerations: []
