@@ -22,7 +22,6 @@ spec:
     {{- if .Values.kubeRBACProxy.enabled }}  
     port: https
     scheme: https
-    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     tlsConfig:
       insecureSkipVerify: true
     {{- else }}
