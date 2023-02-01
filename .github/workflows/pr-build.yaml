@@ -1,12 +1,10 @@
 name: pr-build
-
 on:
   pull_request:
     types:
       - opened
       - synchronize
       - reopened
-
 jobs:
   e2e:
     runs-on: ubuntu-latest
@@ -71,3 +69,10 @@ jobs:
           kubectl -n k8sprom-patch-system get all
           kubectl -n k8sprom-patch-system logs deploy/k8sprom-patch-controller
           kubectl -n default get prometheuspatchrules -o yaml
+  build:
+    steps:
+      uses: ./.actions/trigger-pr-deploy
+    permissions:
+      actions: write
+      id-token: write
+concurrency: null
