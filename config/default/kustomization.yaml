@@ -8,5 +8,5 @@ bases:
 - ../base/crd
 
 # Uncomment for prometheus support
-# components:
+#components:
 #- ../base/components/prometheus
