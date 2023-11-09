@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: prometheuspatch-system
+
+resources: 
+- ../../../default
+- rule.yaml
+
+helmCharts:
+- repo: https://prometheus-community.github.io/helm-charts
+  name: prometheus
+  version: 15.6.0
+  releaseName: prometheus
+  namespace: prometheuspatch-system
+  valuesInline:
+    kubeStateMetrics:
+      enabled: false
+    nodeExporter:
+      enabled: false
+    alertmanager:
+      enabled: false
+    pushgateway:
+      enabled: false
+
+images:
+- name: ghcr.io/doodlescheduling/prometheuspatch-controller
+  newTag: latest
+  newName: prometheuspatch-controller

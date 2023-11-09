@@ -30,7 +30,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 
-	v1beta1 "github.com/doodlescheduling/k8sprom-patch-controller/api/v1beta1"
+	v1beta1 "github.com/doodlescheduling/prometheuspatch-controller/api/v1beta1"
 	// +kubebuilder:scaffold:imports
 )
 

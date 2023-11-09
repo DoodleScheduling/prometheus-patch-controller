@@ -1,7 +1,7 @@
 apiVersion: v2
 appVersion: v0.2.2
 description: Patch kubernetes resources using prometheus queries
-home: https://github.com/DoodleScheduling/k8sprom-patch-controller
+home: https://github.com/DoodleScheduling/prometheuspatch-controller
 maintainers:
 - name: devops
   email: devops@doodle.com
@@ -9,7 +9,7 @@ keywords:
 - kubernetes-controller
 - prometheus
 - kubernetes-patch
-name: k8sprom-patch-controller
+name: prometheuspatch-controller
 sources:
-- https://github.com/DoodleScheduling/k8sprom-patch-controller
+- https://github.com/DoodleScheduling/prometheuspatch-controller
 version: 0.5.4

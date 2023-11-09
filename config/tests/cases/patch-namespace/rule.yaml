@@ -4,7 +4,7 @@ metadata:
   name: annotate-namespace
 spec:
   prometheus:
-    address: http://prometheus-server.prometheus
+    address: http://prometheus-server
   expr: |
     up == 1
   interval: 1m

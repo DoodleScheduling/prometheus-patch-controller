@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "k8sprom-patch-controller.name" -}}
+{{- define "prometheuspatch-controller.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "k8sprom-patch-controller.fullname" -}}
+{{- define "prometheuspatch-controller.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "k8sprom-patch-controller.chart" -}}
+{{- define "prometheuspatch-controller.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "k8sprom-patch-controller.serviceAccountName" -}}
+{{- define "prometheuspatch-controller.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "k8sprom-patch-controller.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "prometheuspatch-controller.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}

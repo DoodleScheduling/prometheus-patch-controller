@@ -34,7 +34,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	metricsinfradoodlecomv1beta1 "github.com/doodlescheduling/k8sprom-patch-controller/api/v1beta1"
+	metricsinfradoodlecomv1beta1 "github.com/doodlescheduling/prometheuspatch-controller/api/v1beta1"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -58,8 +58,8 @@ var _ = BeforeSuite(func() {
 
 	By("bootstrapping test environment")
 	testEnv = &envtest.Environment{
-		CRDDirectoryPaths:     []string{filepath.Join("..", "config", "base", "crd", "bases")},
-		ErrorIfCRDPathMissing: false,
+		CRDDirectoryPaths:     []string{filepath.Join("..", "..", "config", "base", "crd", "bases")},
+		ErrorIfCRDPathMissing: true,
 	}
 
 	cfg, err := testEnv.Start()

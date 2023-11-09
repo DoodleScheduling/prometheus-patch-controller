@@ -1,8 +1,8 @@
 
 # Image URL to use all building/pushing image targets
-IMG ?= k8sprom-patch-controller:latest
+IMG ?= prometheuspatch-controller:latest
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
-ENVTEST_K8S_VERSION = 1.23
+ENVTEST_K8S_VERSION = 1.27
 
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
@@ -111,18 +111,30 @@ uninstall: manifests kustomize ## Uninstall CRDs from the K8s cluster specified 
 
 .PHONY: deploy
 deploy: manifests kustomize ## Deploy controller to the K8s cluster specified in ~/.kube/config.
-	cd config/base/manager && $(KUSTOMIZE) edit set image ghcr.io/doodlescheduling/k8sprom-patch-controller=${IMG}
+	cd config/base/manager && $(KUSTOMIZE) edit set image ghcr.io/doodlescheduling/prometheuspatch-controller=${IMG}
 	$(KUSTOMIZE) build config/default | kubectl apply -f -
 
 .PHONY: undeploy
 undeploy: ## Undeploy controller from the K8s cluster specified in ~/.kube/config. Call with ignore-not-found=true to ignore resource not found errors during deletion.
 	$(KUSTOMIZE) build config/default | kubectl delete --ignore-not-found=$(ignore-not-found) -f -
 
+TEST_PROFILE=patch-namespace
+CLUSTER=kind
+
+.PHONY: kind-test
+kind-test: ## Deploy including test
+	kustomize build config/base/crd | kubectl --context kind-${CLUSTER} apply -f -	
+	kubectl --context kind-${CLUSTER} -n prometheuspatch-system delete pods --all
+	kind load docker-image ${IMG} --name ${CLUSTER}
+	kustomize build config/tests/cases/${TEST_PROFILE} --enable-helm | kubectl --context kind-${CLUSTER} apply -f -	
+	kubectl --context kind-${CLUSTER} -n prometheuspatch-system wait --for=condition=Ready pods -l control-plane=controller-manager -l app.kubernetes.io/managed-by!=Helm,verify!=yes --timeout=3m
+	kubectl --context kind-${CLUSTER} -n prometheuspatch-system wait --for=jsonpath='{.status.conditions[1].reason}'=PodCompleted pods -l app.kubernetes.io/managed-by!=Helm,verify=yes --timeout=3m
+
 CONTROLLER_GEN = $(GOBIN)/controller-gen
 .PHONY: controller-gen
 controller-gen: ## Download controller-gen locally if necessary.
 	$(call go-install-tool,$(CONTROLLER_GEN),sigs.k8s.io/controller-tools/cmd/controller-gen@v0.10.0)
-	cp config/base/crd/bases/* chart/k8sprom-patch-controller/crds/
+	cp config/base/crd/bases/* chart/prometheuspatch-controller/crds/
 
 GOLANGCI_LINT = $(GOBIN)/golangci-lint
 .PHONY: golangci-lint
