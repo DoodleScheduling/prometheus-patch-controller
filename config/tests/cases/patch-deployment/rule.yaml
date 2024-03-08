@@ -1,21 +1,23 @@
 apiVersion: metrics.infra.doodle.com/v1beta1
 kind: PrometheusPatchRule
 metadata:
-  name: annotate-namespace
+  name: patch-deployment
 spec:
   prometheus:
     address: http://prometheus-server
   expr: |
     up == 1
   interval: 1m
-  suspend: false
   json6902Patches:
   - target:
       version: v1
-      name: default
-      resource: namespaces
+      name: prometheus-server
+      kind: Deployment
+      group: apps
+      namespace: prometheuspatch-system
+
     patch:
     - op: add
-      path: /metadata/annotations
+      path: /metadata/labels
       value:
         foo: bar

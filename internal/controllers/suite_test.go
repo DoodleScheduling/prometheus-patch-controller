@@ -26,7 +26,6 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	corev1 "k8s.io/api/core/v1"
-	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes/scheme"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -77,15 +76,11 @@ var _ = BeforeSuite(func() {
 	})
 	Expect(err).ToNot(HaveOccurred())
 
-	dynClient, err := dynamic.NewForConfig(k8sManager.GetConfig())
-	Expect(err).ToNot(HaveOccurred(), "failed to setup dynClient")
-
 	//+kubebuilder:scaffold:scheme
 	// PrometheusPatchRule setup
 	fmt.Printf("setup..................................")
 	err = (&PrometheusPatchRuleReconciler{
 		Client:       k8sManager.GetClient(),
-		DynClient:    dynClient,
 		FieldManager: "test-suite",
 		Log:          ctrl.Log.WithName("controllers").WithName("PrometheusPatchRule"),
 		Scheme:       k8sManager.GetScheme(),

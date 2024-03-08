@@ -5,6 +5,7 @@ namespace: prometheuspatch-system
 resources: 
 - ../../../default
 - rule.yaml
+- verify-pod.yaml
 
 helmCharts:
 - repo: https://prometheus-community.github.io/helm-charts

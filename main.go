@@ -30,8 +30,6 @@ import (
 	flag "github.com/spf13/pflag"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/client-go/dynamic"
-	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	ctrl "sigs.k8s.io/controller-runtime"
 	ctrlcache "sigs.k8s.io/controller-runtime/pkg/cache"
@@ -48,7 +46,6 @@ var (
 )
 
 func init() {
-	_ = clientgoscheme.AddToScheme(scheme)
 	_ = infrav1beta1.AddToScheme(scheme)
 	_ = corev1.AddToScheme(scheme)
 	// +kubebuilder:scaffold:scheme
@@ -145,15 +142,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	dynClient, err := dynamic.NewForConfig(mgr.GetConfig())
-	if err != nil {
-		setupLog.Error(err, "unable to create dynamic client")
-		os.Exit(1)
-	}
-
 	if err = (&controllers.PrometheusPatchRuleReconciler{
 		Client:       mgr.GetClient(),
-		DynClient:    dynClient,
 		FieldManager: fieldManager,
 		Log:          ctrl.Log.WithName("controllers").WithName("PrometheusPatchRule"),
 		Scheme:       mgr.GetScheme(),

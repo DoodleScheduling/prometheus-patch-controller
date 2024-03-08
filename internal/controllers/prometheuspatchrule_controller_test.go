@@ -326,9 +326,9 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 					JSON6902Patches: []v1beta1.JSON6902Patch{
 						v1beta1.JSON6902Patch{
 							Target: v1beta1.Selector{
-								Version:  "v1",
-								Resource: "namespaces",
-								Name:     "default",
+								Version: "v1",
+								Kind:    "Namespace",
+								Name:    "default",
 							},
 							Patch: []v1beta1.JSONPatch{
 								v1beta1.JSONPatch{
@@ -425,9 +425,9 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 					JSON6902Patches: []v1beta1.JSON6902Patch{
 						v1beta1.JSON6902Patch{
 							Target: v1beta1.Selector{
-								Version:  "v1",
-								Resource: "namespaces",
-								Name:     "default",
+								Version: "v1",
+								Kind:    "Namespace",
+								Name:    "default",
 							},
 							Patch: []v1beta1.JSONPatch{
 								v1beta1.JSONPatch{
@@ -443,7 +443,7 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 							Target: v1beta1.Selector{
 								Group:         "metrics.infra.doodle.com",
 								Version:       "v1beta1",
-								Resource:      "prometheuspatchrules",
+								Kind:          "PrometheusPatchRule",
 								LabelSelector: "selector=foo",
 							},
 							Patch: []v1beta1.JSONPatch{
@@ -536,7 +536,7 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 							Target: v1beta1.Selector{
 								Group:     "metrics.infra.doodle.com",
 								Version:   "v1beta1",
-								Resource:  "prometheuspatchrules",
+								Kind:      "PrometheusPatchRule",
 								Name:      "does-not-exist",
 								Namespace: keyRule.Namespace,
 							},
@@ -564,7 +564,7 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 			got := &v1beta1.PrometheusPatchRule{}
 			Eventually(func() bool {
 				_ = k8sClient.Get(context.Background(), keyRule, got)
-
+				fmt.Printf("%#v\n", got)
 				return len(got.Status.Conditions) == 2 &&
 					got.Status.Conditions[1].Reason == v1beta1.PatchApplyFailedReason &&
 					got.Status.Conditions[1].Status == "False" &&
@@ -603,9 +603,9 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 					JSON6902Patches: []v1beta1.JSON6902Patch{
 						v1beta1.JSON6902Patch{
 							Target: v1beta1.Selector{
-								Version:  "v1",
-								Resource: "namespaces",
-								Name:     "default",
+								Version: "v1",
+								Kind:    "Namespace",
+								Name:    "default",
 							},
 							Patch: []v1beta1.JSONPatch{
 								v1beta1.JSONPatch{

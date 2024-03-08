@@ -30,10 +30,11 @@ import (
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -51,7 +52,6 @@ import (
 // PatchPrometheusPatchRuleReconciler reconciles a PrometheusPatchRule object
 type PrometheusPatchRuleReconciler struct {
 	client.Client
-	DynClient    dynamic.Interface
 	FieldManager string
 	Log          logr.Logger
 	Recorder     record.EventRecorder
@@ -95,18 +95,18 @@ func (r *PrometheusPatchRuleReconciler) Reconcile(ctx context.Context, req ctrl.
 		return ctrl.Result{}, nil
 	}
 
-	rule, res, err := r.reconcile(ctx, rule, logger)
-	if err != nil {
-		r.Recorder.Event(&rule, "Normal", "error", err.Error())
+	rule, res, reconcileErr := r.reconcile(ctx, rule, logger)
+	if reconcileErr != nil {
+		r.Recorder.Event(&rule, "Normal", "error", reconcileErr.Error())
 	}
 
 	// Update status after reconciliation.
 	if err = r.patchStatus(ctx, &rule); err != nil {
 		logger.Error(err, "unable to update status after reconciliation")
-		return ctrl.Result{Requeue: true}, err
+		return ctrl.Result{}, err
 	}
 
-	return res, err
+	return res, reconcileErr
 }
 
 func (r *PrometheusPatchRuleReconciler) reconcile(ctx context.Context, rule v1beta1.PrometheusPatchRule, logger logr.Logger) (v1beta1.PrometheusPatchRule, ctrl.Result, error) {
@@ -173,26 +173,27 @@ func (r *PrometheusPatchRuleReconciler) applyPatches(ctx context.Context, rule v
 		return rule, nil
 	}
 
-	for _, v := range rule.Spec.JSON6902Patches {
-		var gvr = schema.GroupVersionResource{
-			Group:    v.Target.Group,
-			Version:  v.Target.Version,
-			Resource: v.Target.Resource,
-		}
-
-		res := r.DynClient.Resource(gvr).Namespace(v.Target.Namespace)
-		var err error
-
-		b, err := json.Marshal(v.Patch)
+	for _, patch := range rule.Spec.JSON6902Patches {
+		b, err := json.Marshal(patch.Patch)
 		if err != nil {
 			rule = v1beta1.PrometheusPatchRuleNoPatchApplied(rule, v1beta1.PatchApplyFailedReason, err.Error())
 			return rule, err
 		}
 
-		if v.Target.Name == "" {
-			list, err := res.List(ctx, metav1.ListOptions{
-				LabelSelector: v.Target.LabelSelector,
+		if patch.Target.Name == "" {
+			res := unstructured.UnstructuredList{}
+			res.SetGroupVersionKind(schema.GroupVersionKind{
+				Group:   patch.Target.Group,
+				Version: patch.Target.Version,
+				Kind:    patch.Target.Kind,
 			})
+
+			set, err := labels.ConvertSelectorToLabelsMap(patch.Target.LabelSelector)
+			if err != nil {
+				return rule, err
+			}
+
+			err = r.Client.List(ctx, &res, client.MatchingLabels(set))
 
 			if err != nil {
 				err = fmt.Errorf("failed to find target resources: %w", err)
@@ -200,20 +201,35 @@ func (r *PrometheusPatchRuleReconciler) applyPatches(ctx context.Context, rule v
 				return rule, err
 			}
 
-			for _, item := range list.Items {
-				res := r.DynClient.Resource(gvr).Namespace(item.GetNamespace())
-				_, err := res.Patch(ctx, item.GetName(), types.JSONPatchType, b, metav1.PatchOptions{
-					FieldManager: r.FieldManager,
-				})
+			for _, item := range res.Items {
+				if err := r.Client.Patch(ctx, &item, client.RawPatch(types.JSONPatchType, b), client.FieldOwner(r.FieldManager)); err != nil {
+					return rule, err
+				}
 
 				if err != nil {
 					break
 				}
 			}
 		} else {
-			_, err = res.Patch(ctx, v.Target.Name, types.JSONPatchType, b, metav1.PatchOptions{
-				FieldManager: r.FieldManager,
+			res := unstructured.Unstructured{}
+			res.SetGroupVersionKind(schema.GroupVersionKind{
+				Group:   patch.Target.Group,
+				Version: patch.Target.Version,
+				Kind:    patch.Target.Kind,
 			})
+
+			err = r.Client.Get(ctx, client.ObjectKey{
+				Name:      patch.Target.Name,
+				Namespace: patch.Target.Namespace,
+			}, &res)
+
+			if err != nil {
+				return rule, err
+			}
+
+			if err := r.Client.Patch(ctx, &res, client.RawPatch(types.JSONPatchType, b), client.FieldOwner(r.FieldManager)); err != nil {
+				return rule, err
+			}
 		}
 
 		if err != nil {
