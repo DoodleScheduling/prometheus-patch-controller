@@ -1,4 +1,4 @@
-project_name: prometheuspatch-controller
+project_name: prometheus-patch-controller
 
 builds:
 - id: manager
