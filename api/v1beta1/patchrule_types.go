@@ -107,7 +107,7 @@ type Selector struct {
 	// identifying and/or selecting resources.
 	// https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
 	// +optional
-	Resource string `json:"resource,omitempty"`
+	Kind string `json:"kind,omitempty"`
 
 	// Namespace to select resources from.
 	// +optional

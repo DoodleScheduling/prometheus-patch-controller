@@ -1,4 +1,4 @@
-project_name: k8sprom-patch-controller
+project_name: prometheuspatch-controller
 
 builds:
 - id: manager

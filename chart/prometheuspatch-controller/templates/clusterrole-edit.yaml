@@ -2,13 +2,14 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ template "k8sprom-patch-controller.fullname" . }}-view
+  name: {{ template "prometheuspatch-controller.fullname" . }}-edit
   labels:
-    app.kubernetes.io/name: {{ include "k8sprom-patch-controller.name" . }}
+    app.kubernetes.io/name: {{ include "prometheuspatch-controller.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    helm.sh/chart: {{ include "k8sprom-patch-controller.chart" . }}
-    rbac.authorization.k8s.io/aggregate-to-view: "true"
+    helm.sh/chart: {{ include "prometheuspatch-controller.chart" . }}
+    rbac.authorization.k8s.io/aggregate-to-edit: "true"
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
   annotations:
     {{- toYaml .Values.annotations | nindent 4 }}
 rules:
@@ -17,8 +18,12 @@ rules:
   resources:
   - prometheuspatchrules
   verbs:
+  - create
+  - delete
   - get
   - list
+  - patch
+  - update
   - watch
 - apiGroups:
   - metrics.infra.doodle.com

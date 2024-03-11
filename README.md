@@ -1,10 +1,10 @@
 # Kubernetes resource patch controller using PromQL
 
-[![release](https://img.shields.io/github/release/DoodleScheduling/k8sprom-patch-controller/all.svg)](https://github.com/DoodleScheduling/k8sprom-patch-controller/releases)
-[![release](https://github.com/doodlescheduling/k8sprom-patch-controller/actions/workflows/release.yaml/badge.svg)](https://github.com/doodlescheduling/k8sprom-patch-controller/actions/workflows/release.yaml)
-[![report](https://goreportcard.com/badge/github.com/DoodleScheduling/k8sprom-patch-controller)](https://goreportcard.com/report/github.com/DoodleScheduling/k8sprom-patch-controller)
-[![Coverage Status](https://coveralls.io/repos/github/DoodleScheduling/k8sprom-patch-controller/badge.svg?branch=master)](https://coveralls.io/github/DoodleScheduling/k8sprom-patch-controller?branch=master)
-[![license](https://img.shields.io/github/license/DoodleScheduling/k8sprom-patch-controller.svg)](https://github.com/DoodleScheduling/k8sprom-patch-controller/blob/master/LICENSE)
+[![release](https://img.shields.io/github/release/DoodleScheduling/prometheuspatch-controller/all.svg)](https://github.com/DoodleScheduling/prometheuspatch-controller/releases)
+[![release](https://github.com/doodlescheduling/prometheuspatch-controller/actions/workflows/release.yaml/badge.svg)](https://github.com/doodlescheduling/prometheuspatch-controller/actions/workflows/release.yaml)
+[![report](https://goreportcard.com/badge/github.com/DoodleScheduling/prometheuspatch-controller)](https://goreportcard.com/report/github.com/DoodleScheduling/prometheuspatch-controller)
+[![Coverage Status](https://coveralls.io/repos/github/DoodleScheduling/prometheuspatch-controller/badge.svg?branch=master)](https://coveralls.io/github/DoodleScheduling/prometheuspatch-controller?branch=master)
+[![license](https://img.shields.io/github/license/DoodleScheduling/prometheuspatch-controller.svg)](https://github.com/DoodleScheduling/prometheuspatch-controller/blob/master/LICENSE)
 
 Apply patches to kubernetes resources based on prometheus queries.
 
@@ -47,7 +47,7 @@ As soon as the expression was `true` for the specified duration the patches get 
 Define a list of patches which needs a target selector as well as a list of JSON 6902 patch operations.
 The target select requires at least the api version `version` as well as the resource group `resource` which is usually the kind in plural lowercase.
 
-```
+```yaml
 json6902Patches:
 - target:
     version: v1
@@ -84,7 +84,7 @@ You may disable the binding and define fine grained cluster roles accordingly.
 
 ### Helm
 
-Please see [chart/k8sprom-patch-controller](https://github.com/DoodleScheduling/k8sprom-patch-controller/tree/master/chart/k8sprom-patch-controller) for the helm chart docs.
+Please see [chart/prometheuspatch-controller](https://github.com/DoodleScheduling/prometheuspatch-controller/tree/master/chart/prometheuspatch-controller) for the helm chart docs.
 
 ### Manifests/kustomize
 
@@ -92,15 +92,27 @@ Alternatively you may get the bundled manifests in each release to deploy it usi
 
 ## Configure the controller
 
-You may change base settings for the controller using env variables (or alternatively command line arguments).
-Available env variables:
+The controller can be configured using cmd args:
+```
+--concurrent int                            The number of concurrent Pod reconciles. (default 4)
+--enable-leader-election                    Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.
+--field-manager string                      The name of the field maanger used for server side apply https://kubernetes.io/docs/reference/using-api/server-side-apply/. (default "prometheuspatch-controller")
+--graceful-shutdown-timeout duration        The duration given to the reconciler to finish before forcibly stopping. (default 10m0s)
+--health-addr string                        The address the health endpoint binds to. (default ":9557")
+--insecure-kubeconfig-exec                  Allow use of the user.exec section in kubeconfigs provided for remote apply.
+--insecure-kubeconfig-tls                   Allow that kubeconfigs provided for remote apply can disable TLS verification.
+--kube-api-burst int                        The maximum burst queries-per-second of requests sent to the Kubernetes API. (default 300)
+--kube-api-qps float32                      The maximum queries-per-second of requests sent to the Kubernetes API. (default 50)
+--leader-election-lease-duration duration   Interval at which non-leader candidates will wait to force acquire leadership (duration string). (default 35s)
+--leader-election-release-on-cancel         Defines if the leader should step down voluntarily on controller manager shutdown. (default true)
+--leader-election-renew-deadline duration   Duration that the leading controller manager will retry refreshing leadership before giving up (duration string). (default 30s)
+--leader-election-retry-period duration     Duration the LeaderElector clients should wait between tries of actions (duration string). (default 5s)
+--log-encoding string                       Log encoding format. Can be 'json' or 'console'. (default "json")
+--log-level string                          Log verbosity level. Can be one of 'trace', 'debug', 'info', 'error'. (default "info")
+--max-retry-delay duration                  The maximum amount of time for which an object being reconciled will have to wait before a retry. (default 15m0s)
+--metrics-addr string                       The address the metric endpoint binds to. (default ":9556")
+--min-retry-delay duration                  The minimum amount of time for which an object being reconciled will have to wait before a retry. (default 750ms)
+--watch-all-namespaces                      Watch for resources in all namespaces, if set to false it will only watch the runtime namespace. (default true)
+--watch-label-selector string               Watch for resources with matching labels e.g. 'sharding.fluxcd.io/shard=shard1'.
 
-| Name  | Description | Default |
-|-------|-------------| --------|
-| `METRICS_ADDR` | The address of the metric endpoint binds to. | `:9556` |
-| `PROBE_ADDR` | The address of the probe endpoints binds to. | `:9557` |
-| `ENABLE_LEADER_ELECTION` | Enable leader election for controller manager. | `false` |
-| `LEADER_ELECTION_NAMESPACE` | Change the leader election namespace. This is by default the same where the controller is deployed. | `` |
-| `NAMESPACES` | The controller listens by default for all namespaces. This may be limited to a comma delimited list of dedicated namespaces. | `` |
-| `CONCURRENT` | The number of concurrent reconcile workers.  | `2` |
-| `FIELD_MANAGER` | The name of the field manager used for server side apply https://kubernetes.io/docs/reference/using-api/server-side-apply/. | `k8sprom-patch-controller` |
+``

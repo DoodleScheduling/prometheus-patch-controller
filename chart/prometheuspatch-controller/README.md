@@ -1,16 +1,16 @@
-# k8sprom-patch-controller helm chart
+# prometheuspatch-controller helm chart
 
-Installs the [k8sprom-patch-controller](https://github.com/DoodleScheduling/k8sprom-patch-controller).
+Installs the [prometheuspatch-controller](https://github.com/DoodleScheduling/prometheuspatch-controller).
 
 ## Installing the Chart
 
-To install the chart with the release name `k8sprom-patch-controller`:
+To install the chart with the release name `prometheuspatch-controller`:
 
 ```console
-helm upgrade --install k8sprom-patch-controller oci://ghcr.io/doodlescheduling/charts/k8sprom-patch-controller
+helm upgrade --install prometheuspatch-controller oci://ghcr.io/doodlescheduling/charts/prometheuspatch-controller
 ```
 
-This command deploys k8sprom-patch-controller with the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
+This command deploys prometheuspatch-controller with the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 ## Using the Chart
 
@@ -30,5 +30,5 @@ podAnnotations:
 See Customizing the Chart Before Installing. To see all configurable options with detailed comments, visit the chart's values.yaml, or run the configuration command:
 
 ```sh
-$ helm show values oci://ghcr.io/doodlescheduling/charts/k8sprom-patch-controller
+$ helm show values oci://ghcr.io/doodlescheduling/charts/prometheuspatch-controller
 ```

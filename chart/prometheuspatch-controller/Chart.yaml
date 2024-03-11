@@ -1,0 +1,17 @@
+apiVersion: v2
+appVersion: v0.0.0
+description: Patch kubernetes resources using prometheus rule evaluations
+home: https://github.com/DoodleScheduling/prometheuspatch-controller
+maintainers:
+- name: devops
+  email: devops@doodle.com
+keywords:
+- kubernetes-controller
+- prometheus
+- kubernetes-patch
+- prometheus-rules
+- prometheus-expresions
+name: prometheuspatch-controller
+sources:
+- https://github.com/DoodleScheduling/prometheuspatch-controller
+version: 0.0.0

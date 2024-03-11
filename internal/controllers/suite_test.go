@@ -26,7 +26,6 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	corev1 "k8s.io/api/core/v1"
-	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes/scheme"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -34,7 +33,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	metricsinfradoodlecomv1beta1 "github.com/doodlescheduling/k8sprom-patch-controller/api/v1beta1"
+	metricsinfradoodlecomv1beta1 "github.com/doodlescheduling/prometheuspatch-controller/api/v1beta1"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -58,8 +57,8 @@ var _ = BeforeSuite(func() {
 
 	By("bootstrapping test environment")
 	testEnv = &envtest.Environment{
-		CRDDirectoryPaths:     []string{filepath.Join("..", "config", "base", "crd", "bases")},
-		ErrorIfCRDPathMissing: false,
+		CRDDirectoryPaths:     []string{filepath.Join("..", "..", "config", "base", "crd", "bases")},
+		ErrorIfCRDPathMissing: true,
 	}
 
 	cfg, err := testEnv.Start()
@@ -77,15 +76,11 @@ var _ = BeforeSuite(func() {
 	})
 	Expect(err).ToNot(HaveOccurred())
 
-	dynClient, err := dynamic.NewForConfig(k8sManager.GetConfig())
-	Expect(err).ToNot(HaveOccurred(), "failed to setup dynClient")
-
 	//+kubebuilder:scaffold:scheme
 	// PrometheusPatchRule setup
 	fmt.Printf("setup..................................")
 	err = (&PrometheusPatchRuleReconciler{
 		Client:       k8sManager.GetClient(),
-		DynClient:    dynClient,
 		FieldManager: "test-suite",
 		Log:          ctrl.Log.WithName("controllers").WithName("PrometheusPatchRule"),
 		Scheme:       k8sManager.GetScheme(),

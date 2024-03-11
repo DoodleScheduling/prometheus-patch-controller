@@ -8,7 +8,7 @@ fullnameOverride: ""
 
 image:
   pullPolicy: IfNotPresent
-  repository: ghcr.io/doodlescheduling/k8sprom-patch-controller
+  repository: ghcr.io/doodlescheduling/prometheuspatch-controller
   tag:
 
 imagePullSecrets: []
