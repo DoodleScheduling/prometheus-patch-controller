@@ -564,7 +564,6 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 			got := &v1beta1.PrometheusPatchRule{}
 			Eventually(func() bool {
 				_ = k8sClient.Get(context.Background(), keyRule, got)
-				fmt.Printf("%#v\n", got)
 				return len(got.Status.Conditions) == 2 &&
 					got.Status.Conditions[1].Reason == v1beta1.PatchApplyFailedReason &&
 					got.Status.Conditions[1].Status == "False" &&

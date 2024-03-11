@@ -210,6 +210,12 @@ func (r *PrometheusPatchRuleReconciler) applyPatches(ctx context.Context, rule v
 					break
 				}
 			}
+
+			if err != nil {
+				err = fmt.Errorf("failed to apply patch: %w", err)
+				rule = v1beta1.PrometheusPatchRuleNoPatchApplied(rule, v1beta1.PatchApplyFailedReason, err.Error())
+				return rule, err
+			}
 		} else {
 			res := unstructured.Unstructured{}
 			res.SetGroupVersionKind(schema.GroupVersionKind{
@@ -224,6 +230,8 @@ func (r *PrometheusPatchRuleReconciler) applyPatches(ctx context.Context, rule v
 			}, &res)
 
 			if err != nil {
+				err = fmt.Errorf("failed to apply patch: %w", err)
+				rule = v1beta1.PrometheusPatchRuleNoPatchApplied(rule, v1beta1.PatchApplyFailedReason, err.Error())
 				return rule, err
 			}
 
@@ -232,11 +240,6 @@ func (r *PrometheusPatchRuleReconciler) applyPatches(ctx context.Context, rule v
 			}
 		}
 
-		if err != nil {
-			err = fmt.Errorf("failed to apply patch: %w", err)
-			rule = v1beta1.PrometheusPatchRuleNoPatchApplied(rule, v1beta1.PatchApplyFailedReason, err.Error())
-			return rule, err
-		}
 	}
 
 	rule = v1beta1.PrometheusPatchRulePatchApplied(rule, v1beta1.PatchAppliedReason)
