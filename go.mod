@@ -1,4 +1,4 @@
-module github.com/doodlescheduling/prometheuspatch-controller
+module github.com/doodlescheduling/prometheus-patch-controller
 
 go 1.20
 

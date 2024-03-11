@@ -1,10 +1,10 @@
 # Kubernetes resource patch controller using PromQL
 
-[![release](https://img.shields.io/github/release/DoodleScheduling/prometheuspatch-controller/all.svg)](https://github.com/DoodleScheduling/prometheuspatch-controller/releases)
-[![release](https://github.com/doodlescheduling/prometheuspatch-controller/actions/workflows/release.yaml/badge.svg)](https://github.com/doodlescheduling/prometheuspatch-controller/actions/workflows/release.yaml)
-[![report](https://goreportcard.com/badge/github.com/DoodleScheduling/prometheuspatch-controller)](https://goreportcard.com/report/github.com/DoodleScheduling/prometheuspatch-controller)
-[![Coverage Status](https://coveralls.io/repos/github/DoodleScheduling/prometheuspatch-controller/badge.svg?branch=master)](https://coveralls.io/github/DoodleScheduling/prometheuspatch-controller?branch=master)
-[![license](https://img.shields.io/github/license/DoodleScheduling/prometheuspatch-controller.svg)](https://github.com/DoodleScheduling/prometheuspatch-controller/blob/master/LICENSE)
+[![release](https://img.shields.io/github/release/DoodleScheduling/prometheus-patch-controller/all.svg)](https://github.com/DoodleScheduling/prometheus-patch-controller/releases)
+[![release](https://github.com/doodlescheduling/prometheus-patch-controller/actions/workflows/release.yaml/badge.svg)](https://github.com/doodlescheduling/prometheus-patch-controller/actions/workflows/release.yaml)
+[![report](https://goreportcard.com/badge/github.com/DoodleScheduling/prometheus-patch-controller)](https://goreportcard.com/report/github.com/DoodleScheduling/prometheus-patch-controller)
+[![Coverage Status](https://coveralls.io/repos/github/DoodleScheduling/prometheus-patch-controller/badge.svg?branch=master)](https://coveralls.io/github/DoodleScheduling/prometheus-patch-controller?branch=master)
+[![license](https://img.shields.io/github/license/DoodleScheduling/prometheus-patch-controller.svg)](https://github.com/DoodleScheduling/prometheus-patch-controller/blob/master/LICENSE)
 
 Apply patches to kubernetes resources based on prometheus queries.
 
@@ -84,7 +84,7 @@ You may disable the binding and define fine grained cluster roles accordingly.
 
 ### Helm
 
-Please see [chart/prometheuspatch-controller](https://github.com/DoodleScheduling/prometheuspatch-controller/tree/master/chart/prometheuspatch-controller) for the helm chart docs.
+Please see [chart/prometheus-patch-controller](https://github.com/DoodleScheduling/prometheus-patch-controller/tree/master/chart/prometheus-patch-controller) for the helm chart docs.
 
 ### Manifests/kustomize
 
@@ -96,7 +96,7 @@ The controller can be configured using cmd args:
 ```
 --concurrent int                            The number of concurrent Pod reconciles. (default 4)
 --enable-leader-election                    Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.
---field-manager string                      The name of the field maanger used for server side apply https://kubernetes.io/docs/reference/using-api/server-side-apply/. (default "prometheuspatch-controller")
+--field-manager string                      The name of the field maanger used for server side apply https://kubernetes.io/docs/reference/using-api/server-side-apply/. (default "prometheus-patch-controller")
 --graceful-shutdown-timeout duration        The duration given to the reconciler to finish before forcibly stopping. (default 10m0s)
 --health-addr string                        The address the health endpoint binds to. (default ":9557")
 --insecure-kubeconfig-exec                  Allow use of the user.exec section in kubeconfigs provided for remote apply.

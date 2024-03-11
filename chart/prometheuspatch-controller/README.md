@@ -1,16 +1,16 @@
-# prometheuspatch-controller helm chart
+# prometheus-patch-controller helm chart
 
-Installs the [prometheuspatch-controller](https://github.com/DoodleScheduling/prometheuspatch-controller).
+Installs the [prometheus-patch-controller](https://github.com/DoodleScheduling/prometheus-patch-controller).
 
 ## Installing the Chart
 
-To install the chart with the release name `prometheuspatch-controller`:
+To install the chart with the release name `prometheus-patch-controller`:
 
 ```console
-helm upgrade --install prometheuspatch-controller oci://ghcr.io/doodlescheduling/charts/prometheuspatch-controller
+helm upgrade --install prometheus-patch-controller oci://ghcr.io/doodlescheduling/charts/prometheus-patch-controller
 ```
 
-This command deploys prometheuspatch-controller with the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
+This command deploys prometheus-patch-controller with the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 ## Using the Chart
 
@@ -30,5 +30,5 @@ podAnnotations:
 See Customizing the Chart Before Installing. To see all configurable options with detailed comments, visit the chart's values.yaml, or run the configuration command:
 
 ```sh
-$ helm show values oci://ghcr.io/doodlescheduling/charts/prometheuspatch-controller
+$ helm show values oci://ghcr.io/doodlescheduling/charts/prometheus-patch-controller
 ```

@@ -14,7 +14,7 @@ rules:
 - apiGroups:
   - metrics.infra.doodle.com
   resources:
-  - prometheuspatchrules
+  - prometheus-patchrules
   verbs:
   - create
   - delete
@@ -26,13 +26,13 @@ rules:
 - apiGroups:
   - metrics.infra.doodle.com
   resources:
-  - prometheuspatchrules/finalizers
+  - prometheus-patchrules/finalizers
   verbs:
   - update
 - apiGroups:
   - metrics.infra.doodle.com
   resources:
-  - prometheuspatchrules/status
+  - prometheus-patchrules/status
   verbs:
   - get
   - patch

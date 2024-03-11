@@ -21,8 +21,8 @@ spec:
         - /manager
         args:
         - --enable-leader-election
-        image: ghcr.io/doodlescheduling/prometheuspatch-controller:latest
-        name: prometheuspatch-controller
+        image: ghcr.io/doodlescheduling/prometheus-patch-controller:latest
+        name: prometheus-patch-controller
         imagePullPolicy: Never
         ports:
         - name: metrics

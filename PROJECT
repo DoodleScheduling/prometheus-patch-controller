@@ -1,8 +1,8 @@
 domain: doodle.com
 layout:
 - go.kubebuilder.io/v3
-projectName: prometheuspatch-controller
-repo: github.com/doodlescheduling/prometheuspatch-controller
+projectName: prometheus-patch-controller
+repo: github.com/doodlescheduling/prometheus-patch-controller
 resources:
 - api:
     crdVersion: v1
@@ -11,6 +11,6 @@ resources:
   domain: doodle.com
   group: metrics.infra.doodle.com
   kind: PrometheusPatchRule
-  path: github.com/doodlescheduling/prometheuspatch-controller/api/v1beta1
+  path: github.com/doodlescheduling/prometheus-patch-controller/api/v1beta1
   version: v1beta1
 version: "3"

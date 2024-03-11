@@ -41,12 +41,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"github.com/doodlescheduling/prometheuspatch-controller/api/v1beta1"
+	"github.com/doodlescheduling/prometheus-patch-controller/api/v1beta1"
 )
 
-//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheuspatchrules,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheuspatchrules/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheuspatchrules/finalizers,verbs=update
+//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheus-patchrules,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheus-patchrules/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheus-patchrules/finalizers,verbs=update
 //+kubebuilder:rbac:groups="",resources=events,verbs=create;patch
 
 // PatchPrometheusPatchRuleReconciler reconciles a PrometheusPatchRule object

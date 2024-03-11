@@ -21,8 +21,8 @@ import (
 	"os"
 	"time"
 
-	infrav1beta1 "github.com/doodlescheduling/prometheuspatch-controller/api/v1beta1"
-	"github.com/doodlescheduling/prometheuspatch-controller/internal/controllers"
+	infrav1beta1 "github.com/doodlescheduling/prometheus-patch-controller/api/v1beta1"
+	"github.com/doodlescheduling/prometheus-patch-controller/internal/controllers"
 	"github.com/fluxcd/pkg/runtime/client"
 	helper "github.com/fluxcd/pkg/runtime/controller"
 	"github.com/fluxcd/pkg/runtime/leaderelection"
@@ -38,7 +38,7 @@ import (
 	// +kubebuilder:scaffold:imports
 )
 
-const controllerName = "prometheuspatch-controller"
+const controllerName = "prometheus-patch-controller"
 
 var (
 	scheme   = runtime.NewScheme()
@@ -62,7 +62,7 @@ var (
 	leaderElectionOptions   leaderelection.Options
 	rateLimiterOptions      helper.RateLimiterOptions
 	watchOptions            helper.WatchOptions
-	fieldManager            = "prometheuspatch-controller"
+	fieldManager            = "prometheus-patch-controller"
 )
 
 func main() {
