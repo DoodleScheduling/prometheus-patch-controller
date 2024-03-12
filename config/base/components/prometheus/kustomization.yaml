@@ -31,7 +31,7 @@ patches:
               requests:
                 cpu: 5m
                 memory: 64Mi
-          - name: prometheuspatch-controller
+          - name: prometheus-patch-controller
             args:
             - --enable-leader-election
             - --metrics-addr=127.0.0.1:9556

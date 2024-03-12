@@ -30,7 +30,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 
-	v1beta1 "github.com/doodlescheduling/prometheuspatch-controller/api/v1beta1"
+	v1beta1 "github.com/doodlescheduling/prometheus-patch-controller/api/v1beta1"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -493,7 +493,7 @@ var _ = Describe("PrometheusPatchRule tests", func() {
 			}, timeout, interval).Should(BeTrue())
 		})
 
-		It("actually has prometheuspatchrules patched", func() {
+		It("actually has prometheus-patchrules patched", func() {
 			got := &v1beta1.PrometheusPatchRule{}
 			Eventually(func() bool {
 				_ = k8sClient.Get(context.Background(), keyRule, got)

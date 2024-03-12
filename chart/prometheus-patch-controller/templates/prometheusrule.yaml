@@ -3,15 +3,15 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
 metadata:
-  name: {{ template "prometheuspatch-controller.fullname" . }}
+  name: {{ template "prometheus-patch-controller.fullname" . }}
 {{- if .Values.prometheusRule.namespace }}
   namespace: {{ .Values.prometheusRule.namespace }}
 {{- end }}
   labels:
-    app.kubernetes.io/name: {{ include "prometheuspatch-controller.name" . }}
+    app.kubernetes.io/name: {{ include "prometheus-patch-controller.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    helm.sh/chart: {{ include "prometheuspatch-controller.chart" . }}
+    helm.sh/chart: {{ include "prometheus-patch-controller.chart" . }}
 {{- if .Values.prometheusRule.labels }}
 {{- toYaml .Values.prometheusRule.labels | nindent 4 }}
 {{- end }}
@@ -20,7 +20,7 @@ metadata:
 spec:
 {{- with .Values.prometheusRule.rules }}
   groups:
-    - name: {{ template "prometheuspatch-controller.name" $ }}
+    - name: {{ template "prometheus-patch-controller.name" $ }}
       rules: {{ tpl (toYaml .) $ | nindent 8 }}
 {{- end }}
 {{- end }}

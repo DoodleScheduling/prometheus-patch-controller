@@ -4,14 +4,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.12.0
-  name: prometheuspatchrules.metrics.infra.doodle.com
+  name: prometheus-patchrules.metrics.infra.doodle.com
 spec:
   group: metrics.infra.doodle.com
   names:
     kind: PrometheusPatchRule
     listKind: PrometheusPatchRuleList
-    plural: prometheuspatchrules
-    singular: prometheuspatchrule
+    plural: prometheus-patchrules
+    singular: prometheus-patchrule
   scope: Namespaced
   versions:
   - additionalPrinterColumns:

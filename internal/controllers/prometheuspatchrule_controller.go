@@ -41,7 +41,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"github.com/doodlescheduling/prometheuspatch-controller/api/v1beta1"
+	"github.com/doodlescheduling/prometheus-patch-controller/api/v1beta1"
 )
 
 //+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheuspatchrules,verbs=get;list;watch;create;update;patch;delete

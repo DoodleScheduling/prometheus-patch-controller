@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "prometheuspatch-controller.fullname" . }}
+  name: {{ include "prometheus-patch-controller.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "prometheuspatch-controller.name" . }}
+    app.kubernetes.io/name: {{ include "prometheus-patch-controller.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    helm.sh/chart: {{ include "prometheuspatch-controller.chart" . }}
+    helm.sh/chart: {{ include "prometheus-patch-controller.chart" . }}
   annotations:
     {{- toYaml .Values.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "prometheuspatch-controller.name" . }}
+      app.kubernetes.io/name: {{ include "prometheus-patch-controller.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
@@ -22,12 +22,12 @@ spec:
           {{- toYaml .Values.podAnnotations | nindent 8 }}
         {{- end }}
       labels:
-        app.kubernetes.io/name: {{ include "prometheuspatch-controller.name" . }}
+        app.kubernetes.io/name: {{ include "prometheus-patch-controller.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      serviceAccountName: {{ template "prometheuspatch-controller.serviceAccountName" . }}
+      serviceAccountName: {{ template "prometheus-patch-controller.serviceAccountName" . }}
       containers:
-      - name: prometheuspatch-controller
+      - name: prometheus-patch-controller
         env:
         {{- if .Values.env }}
         {{- range $key, $value := .Values.env }}

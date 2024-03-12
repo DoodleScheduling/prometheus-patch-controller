@@ -33,7 +33,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	metricsinfradoodlecomv1beta1 "github.com/doodlescheduling/prometheuspatch-controller/api/v1beta1"
+	metricsinfradoodlecomv1beta1 "github.com/doodlescheduling/prometheus-patch-controller/api/v1beta1"
 	//+kubebuilder:scaffold:imports
 )
 
