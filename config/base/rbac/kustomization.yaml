@@ -5,6 +5,6 @@ resources:
 - role_binding.yaml
 - leader_election_role.yaml
 - leader_election_role_binding.yaml
-- prometheus-patchrule_editor_role.yaml
-- prometheus-patchrule_viewer_role.yaml
+- prometheuspatchrule_editor_role.yaml
+- prometheuspatchrule_viewer_role.yaml
 - cluster_admin_rolebinding.yaml

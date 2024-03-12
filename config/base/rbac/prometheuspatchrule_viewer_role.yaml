@@ -2,12 +2,12 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: prometheus-patchrules-viewer-role
+  name: prometheuspatch-rules-viewer-role
 rules:
 - apiGroups:
   - metrics.infra.doodle.com
   resources:
-  - prometheus-patchrules
+  - prometheuspatch-rules
   verbs:
   - get
   - list
@@ -15,6 +15,6 @@ rules:
 - apiGroups:
   - metrics.infra.doodle.com
   resources:
-  - prometheus-patchrules/status
+  - prometheuspatch-rules/status
   verbs:
   - get
