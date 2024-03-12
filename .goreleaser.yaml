@@ -85,6 +85,7 @@ signs:
   - "--output-certificate=${certificate}"
   - "--output-signature=${signature}"
   - "${artifact}"
+  - --yes
   artifacts: checksum
   output: true
 
@@ -97,3 +98,4 @@ docker_signs:
     args:
     - 'sign'
     - '${artifact}'
+    - --yes
