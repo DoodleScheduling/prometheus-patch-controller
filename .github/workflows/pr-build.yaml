@@ -142,12 +142,12 @@ jobs:
           make docker-build
       - name: Create image tarball
         run: |
-          docker save --output prometheuspatch-controller-container.tar prometheuspatch-controller:latest
+          docker save --output prometheus-patch-controller-container.tar prometheus-patch-controller:latest
       - name: Upload image
         uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce #v3.1.2
         with:
-          name: prometheuspatch-controller-container
-          path: prometheuspatch-controller-container.tar        
+          name: prometheus-patch-controller-container
+          path: prometheus-patch-controller-container.tar        
       - id: profiles
         name: Determine test profiles
         run: |
@@ -177,14 +177,14 @@ jobs:
         uses: engineerd/setup-kind@aa272fe2a7309878ffc2a81c56cfe3ef108ae7d0 #v0.5.0
         with:
           version: v0.17.0
-      - name: Download prometheuspatch-controller container
+      - name: Download prometheus-patch-controller container
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a #v3.0.2
         with:
-          name: prometheuspatch-controller-container
+          name: prometheus-patch-controller-container
           path: /tmp
       - name: Load images
         run: |
-          docker load --input /tmp/prometheuspatch-controller-container.tar
+          docker load --input /tmp/prometheus-patch-controller-container.tar
           docker image ls -a
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@6691bdeb1b0a3286fb7f70fd1423c10e81e5375f # v2.0.0
@@ -195,10 +195,10 @@ jobs:
         if: failure()
         run: |
           kubectl -n kube-system describe pods
-          kubectl -n prometheuspatch-system describe pods
-          kubectl -n prometheuspatch-system get all
-          kubectl -n prometheuspatch-system logs deploy/prometheuspatch-controller
-          kubectl -n prometheuspatch-system get prometheuspatchrule -o yaml
+          kubectl -n prometheus-patch-system describe pods
+          kubectl -n prometheus-patch-system get all
+          kubectl -n prometheus-patch-system logs deploy/prometheus-patch-controller
+          kubectl -n prometheus-patch-system get prometheus-patchrule -o yaml
 
   test-chart: 
     runs-on: ubuntu-latest
@@ -228,17 +228,17 @@ jobs:
       - name: Create kind cluster
         uses: helm/kind-action@dda0770415bac9fc20092cacbc54aa298604d140 # v1.8.0
 
-      - name: Download prometheuspatch-controller container
+      - name: Download prometheus-patch-controller container
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
         with:
-          name: prometheuspatch-controller-container
+          name: prometheus-patch-controller-container
           path: /tmp
 
       - name: Load image
         run: |
-          docker load --input /tmp/prometheuspatch-controller-container.tar
-          docker tag prometheuspatch-controller:latest ghcr.io/doodlescheduling/prometheuspatch-controller:v0.0.0
-          kind load docker-image ghcr.io/doodlescheduling/prometheuspatch-controller:v0.0.0 --name chart-testing
+          docker load --input /tmp/prometheus-patch-controller-container.tar
+          docker tag prometheus-patch-controller:latest ghcr.io/doodlescheduling/prometheus-patch-controller:v0.0.0
+          kind load docker-image ghcr.io/doodlescheduling/prometheus-patch-controller:v0.0.0 --name chart-testing
           docker image ls -a
           
       - name: Run chart-testing (install)
