@@ -30,7 +30,7 @@ import (
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	i"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -44,9 +44,9 @@ import (
 	"github.com/doodlescheduling/prometheus-patch-controller/api/v1beta1"
 )
 
-//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheus-patchrules,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheus-patchrules/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheus-patchrules/finalizers,verbs=update
+//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheuspatchrules,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheuspatchrules/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=metrics.infra.doodle.com,resources=prometheuspatchrules/finalizers,verbs=update
 //+kubebuilder:rbac:groups="",resources=events,verbs=create;patch
 
 // PatchPrometheusPatchRuleReconciler reconciles a PrometheusPatchRule object
